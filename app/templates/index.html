@@ -13,6 +13,159 @@ type="text/javascript"></script>
 
   <body>
       <h1>Hello, {{ user.username }}!</h1>
-  </body>
+      <div class="container">
+         <div class="row  justify-content-center">
+            <div class="col-2"></div>
+            <div clss="col-8">
+               <!-- form as a card -->
+               <!-- card header -->
+               <div class="card text-center">
+                  <div class="card-header bg-info text-white">
+                     <h1>Feature Request</h1>
+                  </div>
+                  <!-- card body -->
+                  <div class="card-body">
+                     <form data-bind="submit: sendRequest">
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <input class="form-control" data-bind="value: featTitleText" placeholder="Feature Title" />
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <textarea  class="form-control" data-bind="value: featDescriptionText" placeholder="Feature Description" ></textarea>
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <select class="form-control" data-bind="options: clientList, value: selectedClient"></select>
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <input class="form-control" data-bind="value: urgencyText" placeholder="Urgency of feature (1-10)">
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <input class="form-control" data-bind="value: targetDateText" placeholder="mm/dd/yyyy">
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <select class="form-control" data-bind="options: productAreaList, value: selectedProductAreaText"></select>
+                           </div>
+                        </div>
+                        <div class="form-row form-item">
+                           <div class="col">
+                              <button class="form-control" type="submit">Submit!</button>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-2"></div>
+      </div>
+      <!-- form row -->
+      <div class="row">
+         <div class="col-3">
+         </div>
+         <div class="col-6 text-center">
+            <!-- <div class="card-deck" data-form="foreach: requests, visible: requests().length > 0">
+               <div class=" card text-center">
+                 <div class="card-header">
+                   <h2 data-bind="text: featTitle"></h2>
+                 </div>
+                 <div class="card-body">
+                   <p data-bind="text: featDescription"></p>
+                   <p data-bind="text: client"></p>
+                   <p data-bind="text: productArea"></p>
+                   <p data-bind="text: urgency"></p>
+                   <p data-bind="text: targetDate"></p>
+                 </div>
+               </div>
+               </div>
+               </div> -->
+            <!-- output fields -->
+            <ul data-bind="foreach: requests, visible: requests().length > 0" class="submitedRequest" >
+               <li>
+                  <div class="card text-center">
+                     <div class="card-header">
+                        <span>
+                           <h2 data-bind="text: featTitle"></h2>
+                        </span>
+                     </div>
+                     <div class="card-body">
+                        <div class="col"></div>
+                        <div class="col">
+                           <strong data-bind="text: featDescription"></strong>
+                        </div>
+                        <div class="col">
+                           <p>Client Name: <strong data-bind="text: client"></strong></p>
+                        </div>
+                        <div class="col">
+                           <p>Product Area: <strong data-bind="text: productArea"></strong></p>
+                        </div>
+                        <div class="col">
+                           <p>Urgency <strong data-bind="text: urgency"></strong></p>
+                        </div>
+                        <div class="col">
+                           <p>Target Date: <strong data-bind="text: targetDate"></strong></p>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+            </ul>
+         </div>
+         <div class="col-3"></div>
+      </div>
+      <script>
+         // define a feat request, this maps onto the output field
+         function FeatureRequest(data) {
+           this.featTitle = ko.observable(data.featTitle);
+           this.featDescription = ko.observable(data.featDescription);
+           this.client = ko.observable(data.client);
+           this.productArea = ko.observable(data.productArea);
+           this.urgency = ko.observable(data.urgency);
+           this.targetDate = ko.observable(data.targetDate);
 
+         }
+         function AppViewModel() {
+          // Data of App View Model
+           var self = this;
+           self.requests = ko.observableArray([]);
+
+           self.featTitleText = ko.observable();
+           self.featDescriptionText = ko.observable();
+           self.selectedClient = ko.observable();
+           self.selectedProductAreaText = ko.observable();
+           self.urgencyText = ko.observable();
+           self.targetDateText = ko.observable();
+
+           this.clientList = ko.observableArray(['Client','1','2','3']);
+           this.productAreaList = ko.observableArray(['Choose Product Area', 'Policies','Claims','Reports'])
+
+           // App view model operations
+           self.sendRequest = function() {
+             // put entered data into requests list as a
+             // feat request
+             self.requests.push(new FeatureRequest({
+               featTitle: this.featTitleText(),
+               featDescription: this.featDescriptionText(),
+               client: this.selectedClient(),
+               productArea: this.selectedProductAreaText(),
+               urgency: this.urgencyText(),
+               targetDate: this.targetDateText()
+             }))
+
+           }
+         }
+         // Activates knockout.js
+         ko.applyBindings(new AppViewModel());
+      </script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    </body>
   </html>
