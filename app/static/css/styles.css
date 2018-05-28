@@ -1,0 +1,11 @@
+.form-item {
+  margin: 15px;
+}
+
+ul {
+  list-style: none;
+}
+
+ul#submitedRequest li {
+  display: inline;
+}
